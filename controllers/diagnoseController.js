@@ -8,8 +8,8 @@ import { Response } from '../models/response.js';
 export const getDiagnoses = async (req, res, next) => {
     try {
         const diagnoses = await _diagnose.find({ status: true })
-        .populate('doctorId')
-        .populate('patientId')
+            .populate('doctorId')
+            .populate('patientId')
 
         res.status(200).send(Response("200", diagnoses, {}));
     }
@@ -35,8 +35,8 @@ export const postDiagnose = async (req, res, next) => {
                 patientId: patientId,
             };
 
-            const diagnose = _diagnose(diagnoseObj);
-            const result = await diagnose.save();
+            const diagnoseSave = _diagnose(diagnoseObj);
+            const result = await diagnoseSave.save();
 
             await _User.findOneAndUpdate(
                 { $and: [{ _id: patientId }, { status: true }] },
@@ -50,20 +50,20 @@ export const postDiagnose = async (req, res, next) => {
                     new: true
                 }
             );
-            const patient = _User.findOne({ $and: [{ _id: patientId }, { status: true }] })
+            const patient = await _User.findOne({ $and: [{ _id: patientId }, { status: true }] })
             const transporter = nodemailer.createTransport({
                 service: 'gmail',
                 auth: {
                     user: 'khateromar9@gmail.com',
-                    pass: 'khaterO98?'
+                    pass: 'wnyv amqc acjv sxf'
                 }
             });
 
             const mailOptions = {
                 from: 'khateromar9@gmail.com',
-                to: patient.email,
-                subject: 'Diagnose your profile',
-                text: diagnose
+                to: `${patient.email}`,
+                subject: 'Subject',
+                text: 'Email content'
             };
 
             transporter.sendMail(mailOptions, function (error, info) {
@@ -71,6 +71,7 @@ export const postDiagnose = async (req, res, next) => {
                     console.log(error);
                 } else {
                     console.log('Email sent: ' + info.response);
+                    // do something useful
                 }
             });
 

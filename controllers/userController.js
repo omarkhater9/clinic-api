@@ -18,7 +18,7 @@ export const getAllDoctors = async (req, res, next) => {
 }
 export const getAllPatients = async (req, res, next) => {
     try {
-        const patients = await _User.find({ $and: [{ role: 'patient' }, { status: true }] }).populate('reviews')
+        const patients = await _User.find({ $and: [{ role: 'patient' }, { status: true }] }).populate('diagnoses')
         res.status(200).send(Response("200", patients, {}));
     }
     catch (err) {
@@ -159,7 +159,10 @@ export const login = async (req, res, next) => {
         const user = await _User.findOne({
             $and: [{ email: email }, { password: hashPassword }, { status: true }]
         })
-            .populate('reviews')
+            .populate({
+                path: 'diagnoses',
+                populate: 'doctorId'
+            })
         if (user != null) {
             res.status(200).json(Response("200", user, {}));
         } else {

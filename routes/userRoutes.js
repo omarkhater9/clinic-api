@@ -24,7 +24,7 @@ router.post(
     userController.registerUser
 )
 router.put(
-    '/updatePatientData',
+    '/updatePatientData/:id',
     verifyToken,
     userController.updatePatientData
 )

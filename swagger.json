@@ -9,6 +9,10 @@
     {
       "name": "Users",
       "description": "Users APIs"
+    },
+    {
+      "name": "Diagnoses",
+      "description": "Diagnoses APIs"
     }
   ],
   "paths": {
@@ -189,12 +193,21 @@
       }
     },
     "/user/updatePatientData": {
-      "post": {
+      "put": {
         "tags": [
           "Users"
         ],
         "description": "Update patient info",
         "summary": "Update patient info",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of user that we want to find",
+            "type": "string"
+          }
+        ],
         "requestBody": {
           "description": "Update patient info",
           "content": {
